@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "player": {
+      "hit": "Hit",
+      "stand": "Stand"
+    }
+  },
+  "hands": {
+    "dealer": {
+      "handLabel": "Dealer hand"
+    },
+    "player": {
+      "handLabel": "Your hand"
+    }
+  },
+  "pages": {
+    "about": "О проекте",
+    "main": "Главная"
+  }
+}

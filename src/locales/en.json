@@ -1,0 +1,14 @@
+{
+  "hands": {
+    "dealer": {
+      "handLabel": "Dealer hand"
+    },
+    "your": {
+      "yourLabel": "Your hand"
+    }
+  },
+  "pages": {
+    "about": "О проекте",
+    "main": "Главная"
+  }
+}
