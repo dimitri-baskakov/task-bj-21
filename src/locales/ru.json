@@ -1,15 +1,17 @@
 {
   "actions": {
-    "player": {
       "hit": "Hit",
-      "stand": "Stand"
-    }
+      "newGame": "New game",
+      "stand": "Stand",
+      "stopGame": "Stop Game"
   },
   "hands": {
     "dealer": {
+      "cardsLabel": "Dealer cards",
       "handLabel": "Dealer hand"
     },
     "player": {
+      "cardsLabel": "Your cards",
       "handLabel": "Your hand"
     }
   },
