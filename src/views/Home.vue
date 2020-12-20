@@ -1,12 +1,7 @@
 <template>
   <div>
-    <div
-      style="outline: 1px solid red; text-align: center; width: 100%;"
-    >
-      {{ alert }}
-    </div>
     <div>
-      {{ $t('hands.dealer.cardsLabel') }} :
+      {{ $t('hands.dealer.cardsLabel') }} ({{ dealerAcesCount }}) :
       <span
         style="margin-right: 5px;"
         :key="index"
@@ -15,7 +10,7 @@
       ></span>
     </div>
     <div>
-      {{ $t('hands.player.cardsLabel') }} :
+      {{ $t('hands.player.cardsLabel') }} ({{ playerAcesCount }}) :
       <span
         style="margin-right: 5px;"
         :key="index"
@@ -24,8 +19,12 @@
       ></span>
     </div>
 
+    <br>
+
     <div>{{ $t('hands.dealer.handLabel') }} : {{ dealerScore }}</div>
     <div>{{ $t('hands.player.handLabel') }} : {{ playerScore }}</div>
+
+    <br>
 
     <div v-if="!alert">
       <button
@@ -39,19 +38,19 @@
       >
         {{ $t('actions.stand') }}
       </button>
-      <br>
-      <button
-        @click="stopGame"
-      >
-        {{ $t('actions.stopGame') }}
-      </button>
     </div>
-    <div v-else>
+    <div>
       <button
         @click="newGame"
       >
         {{ $t('actions.newGame') }}
       </button>
+    </div>
+    <div
+      class="alert"
+      v-if="alert"
+    >
+      {{ alert }}
     </div>
   </div>
 </template>
@@ -74,6 +73,12 @@ export default {
     },
     playerScore: function () {
       return this.getScore('player')
+    },
+    playerAcesCount: function () {
+      return this.hands.player.cards.reduce((acc, curr) => acc + ((curr.value.name === 'A') && 1) || 0, 0)
+    },
+    dealerAcesCount: function () {
+      return this.hands.dealer.cards.reduce((acc, curr) => acc + ((curr.value.name === 'A') && 1) || 0, 0)
     },
   },
   async created() {
@@ -119,21 +124,53 @@ export default {
   },
   methods: {
     calculateScore () {
-      if (this.playerScore > 21) {
-        this.alert = "You loose!"
-      } else if (this.playerScore === this.dealerScore && this.stopHit) {
-        this.alert = "Push!"
-      } else if (this.playerScore === 21 && this.stopHit) {
+      if (
+        this.playerScore === 21 &&
+        this.hands.player.cards.length === 2 &&
+        this.dealerScore < 10 &&
+        this.hands.dealer.cards.length === 1
+      ) {
+        this.alert = 'You win! Black Jack!!!'
+      } else if (this.playerScore > 21) {
+        this.alert = 'You loose!'
+      } else if (
+        this.dealerScore === 21 &&
+        this.hands.dealer.cards.length === 2 &&
+        !(
+          this.playerScore === 21 &&
+          this.hands.player.cards.length === 2
+        )
+      ) {
+        this.alert = 'You loose! Dealer\'s Black Jack!!!'
+      } else if (
+        (
+          this.playerScore === this.dealerScore &&
+          this.stopHit &&
+          !(
+            this.playerScore === 21 &&
+            this.hands.player.cards.length === 2
+          )
+        ) || (
+          this.playerScore === 21 &&
+          this.hands.player.cards.length === 2 &&
+          this.dealerScore === 21 &&
+          this.hands.dealer.cards.length === 2
+        )
+      ) {
+        this.alert = 'Push!'
+      } else if (
+        this.playerScore === 21 && this.stopHit
+      ) {
         this.alert = 'You win!'
         if (this.hands.player.cards.length === 2) {
           this.alert = 'You win! Black Jack!!!'
         }
       } else if (this.dealerScore > 21) {
-        this.alert = "You win!"
+        this.alert = 'You win!'
       } else if (this.playerScore > this.dealerScore && this.stopHit) {
-        this.alert = "You win!"
+        this.alert = 'You win!'
       } else if (this.playerScore < this.dealerScore && this.stopHit) {
-        this.alert = "You loose!"
+        this.alert = 'You loose!'
       }
     },
     getCard () {
@@ -152,7 +189,7 @@ export default {
     },
     getScore (role) {
       let score = this.hands[role].cards.reduce((acc, curr) => acc + curr.value.worth, 0)
-      let acesCount = this.hands[role].cards.reduce((acc, curr) => acc + (curr.value.name === 'A') && 1 || 0, 0)
+      let acesCount = this.hands[role].cards.reduce((acc, curr) => acc + ((curr.value.name === 'A') && 1) || 0, 0)
       while (acesCount > 0 && score > 21) {
         acesCount--
         score -= 10
@@ -160,10 +197,28 @@ export default {
       return score
     },
     hit () {
-      this.getCard()
-      this.hands.player.cards.push(this.deckCard)
-      if (this.dealerScore >= 21) {
-        this.stopHit = true
+      if (this.hands.player.cards.length === 0) {
+        for (let i = 0; i < 2; i++) {
+          this.getCard()
+          this.hands.player.cards.push(this.deckCard)
+        }
+        this.getCard()
+        this.hands.dealer.cards.push(this.deckCard)
+      } else {
+        this.getCard()
+        this.hands.player.cards.push(this.deckCard)
+      }
+      // If player hand has 21 then stand
+      if (this.playerScore === 21) {
+        if (
+          this.hands.player.cards.length === 2 &&
+          this.dealerScore < 10 &&
+          this.hands.dealer.cards.length === 1
+        ) {
+          this.stopHit = true
+        } else {
+          this.stand()
+        }
       }
     },
     newGame () {
@@ -183,24 +238,33 @@ export default {
       )
     },
     stand () {
-      this.getCard()
-      this.hands.dealer.cards.push(this.deckCard)
-    },
-    stopGame () {
+      while (
+        this.dealerScore < 17 &&
+        !(
+          this.playerScore === 21 &&
+          this.hands.player.cards.length === 2 &&
+          this.hands.player.cards.length > 2
+        )
+      ) {
+        this.getCard()
+        this.hands.dealer.cards.push(this.deckCard)
+      }
       this.stopHit = true
     },
   },
-  name: "PageHome",
+  name: 'PageHome',
   watch: {
     deckCard () {
       this.calculateScore()
     },
-    stopHit () {
-      this.calculateScore()
-    },
+    // stopHit () {
+    //   this.calculateScore()
+    // },
   },
 }
 </script>
 
 <style lang="sass">
+.alert
+  border: 1px solid red
 </style>
