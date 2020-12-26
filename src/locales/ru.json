@@ -1,10 +1,11 @@
 {
-  "actions": {
+  "controls": {
       "hit": "Hit",
       "newGame": "New game",
       "stand": "Stand",
       "stopGame": "Stop Game"
   },
+  "description": "Описание",
   "hands": {
     "dealer": {
       "cardsLabel": "Dealer cards",

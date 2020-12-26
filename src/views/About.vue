@@ -25,12 +25,17 @@
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .about
   display: grid
   grid-auto-rows: minmax(100px, auto)
+  grid-column-gap: 20px
   grid-template-columns: repeat(2, 1fr)
   text-align: justify
+
+.about p
+  margin-block-start: 0
+  margin-block-end: 0
 
 .description-header
   grid-column: 1/3
@@ -38,11 +43,3 @@
 .description-image img
   width: 100%
 </style>
-
-<i18n>
-{
-  "ru": {
-    "description": "Описание"
-  }
-}
-</i18n>
