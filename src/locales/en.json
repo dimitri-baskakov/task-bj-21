@@ -1,14 +1,29 @@
 {
+  "alerts": {
+    "dealerBlackJack": "You lose! Dealer's Black Jack!!!",
+    "playerBlackJack": "You win! Black Jack!!!",
+    "playerLose": "You lose!",
+    "playerWin": "You win!",
+    "push": "Push! No one wins."
+  },
+  "controls": {
+    "hit": "Hit",
+    "newGame": "New game",
+    "stand": "Stand"
+  },
+  "description": "Description",
   "hands": {
     "dealer": {
-      "handLabel": "Dealer hand"
+      "cardsLabel": "Dealer cards",
+      "scoreLabel": "Dealer hand"
     },
-    "your": {
-      "yourLabel": "Your hand"
+    "player": {
+      "cardsLabel": "Your cards",
+      "scoreLabel": "Your hand"
     }
   },
   "pages": {
-    "about": "О проекте",
-    "main": "Главная"
+    "about": "About",
+    "main": "Main"
   }
 }

@@ -1,19 +1,25 @@
 {
+  "alerts": {
+    "dealerBlackJack": "You lose! Dealer's Black Jack!!!",
+    "playerBlackJack": "You win! Black Jack!!!",
+    "playerLose": "You lose!",
+    "playerWin": "You win!",
+    "push": "Push! No one wins."
+  },
   "controls": {
-      "hit": "Hit",
-      "newGame": "New game",
-      "stand": "Stand",
-      "stopGame": "Stop Game"
+    "hit": "Hit",
+    "newGame": "New game",
+    "stand": "Stand"
   },
   "description": "Описание",
   "hands": {
     "dealer": {
       "cardsLabel": "Dealer cards",
-      "handLabel": "Dealer hand"
+      "scoreLabel": "Dealer hand"
     },
     "player": {
       "cardsLabel": "Your cards",
-      "handLabel": "Your hand"
+      "scoreLabel": "Your hand"
     }
   },
   "pages": {

@@ -19,13 +19,14 @@ export default {
 #app
   -moz-osx-font-smoothing: grayscale
   -webkit-font-smoothing: antialiased
+  background: lightgrey
   color: #2c3e50
   font-family: "Avenir", Helvetica, Arial, sans-serif
   margin: 0 auto
-  max-width: 1900px
-  padding: 50px 0
+  padding-top: 4vh
   text-align: center
+  min-height: 100vh
 
 .nav
-  margin-bottom: 40px
+  height: 10vh
 </style>

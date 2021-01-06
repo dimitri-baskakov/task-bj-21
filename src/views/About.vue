@@ -31,7 +31,9 @@
   grid-auto-rows: minmax(100px, auto)
   grid-column-gap: 20px
   grid-template-columns: repeat(2, 1fr)
+  margin: 0 auto
   text-align: justify
+  width: 90vw
 
 .about p
   margin-block-start: 0
